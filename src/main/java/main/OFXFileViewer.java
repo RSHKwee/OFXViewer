@@ -8,9 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.event.Level;
 
 import com.webcohesion.ofx4j.domain.data.ResponseEnvelope;
 import com.webcohesion.ofx4j.domain.data.common.TransactionList;
@@ -19,6 +21,8 @@ import com.webcohesion.ofx4j.io.BaseOFXReader;
 import com.webcohesion.ofx4j.io.DefaultHandler;
 
 import com.webcohesion.ofx4j.io.OFXParseException;
+
+import kwee.logger.MyLogger;
 
 /**
  * import com.webcohesion.ofx4j.model.OFXBankAccount; import
@@ -32,7 +36,7 @@ import com.webcohesion.ofx4j.io.OFXParseException;
  */
 
 public class OFXFileViewer {
-  private static final Log LOG = LogFactory.getLog(OFXFileViewer.class);
+  private static final Logger LOG = MyLogger.getLogger();
 
   public static void main(String[] argv) {
 
@@ -64,27 +68,27 @@ public class OFXFileViewer {
 
         @Override
         public void onHeader(String name, String value) {
-          LOG.debug("onHeader: " + name + ":" + value);
+          LOG.info( "onHeader: " + name + ":" + value);
           headers.put(name, value);
         }
 
         @Override
         public void onElement(String name, String value) {
-          LOG.debug("onElement: " + name + "=" + value);
+          LOG.info("onElement: " + name + "=" + value);
 
           char[] tabs = new char[aggregateStack.size() * 2];
           Arrays.fill(tabs, ' ');
-          LOG.debug(new String(tabs) + name + "=" + value);
+          LOG.info(new String(tabs) + name + "=" + value);
 
           aggregateStack.peek().put(name, value);
         }
 
         @Override
         public void startAggregate(String aggregateName) {
-          LOG.debug("Start aggregateName: " + aggregateName);
+          LOG.info("Start aggregateName: " + aggregateName);
           char[] tabs = new char[aggregateStack.size() * 2];
           Arrays.fill(tabs, ' ');
-          LOG.debug(new String(tabs) + aggregateName + " {");
+          LOG.info(new String(tabs) + aggregateName + " {");
 
           TreeMap<String, Object> aggregate = new TreeMap<String, Object>();
           aggregateStack.peek().put(aggregateName, aggregate);
@@ -93,12 +97,12 @@ public class OFXFileViewer {
 
         @Override
         public void endAggregate(String aggregateName) {
-          LOG.debug("End aggregateName: " + aggregateName);
+          LOG.info("End aggregateName: " + aggregateName);
           aggregateStack.pop();
 
           char[] tabs = new char[aggregateStack.size() * 2];
           Arrays.fill(tabs, ' ');
-          LOG.debug(new String(tabs) + "}");
+          LOG.info(new String(tabs) + "}");
         }
       });
       ResponseEnvelope a = unmarshaller.unmarshal(file);
