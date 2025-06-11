@@ -15,6 +15,10 @@
 	<relativePath>../pom.xml</relativePath>
   </parent>
   
+  <properties>
+    <project.description>Viewer for OFX files</project.description>
+  </properties> 
+  
   <dependencies>  
     <dependency>
 	  <groupId>kwee</groupId>
@@ -185,19 +189,14 @@
                 <headerType>console</headerType>
                 <jar>target/ofxviewer-jar-with-dependencies.jar</jar>
                 <outfile>target/ofxviewer.exe</outfile>
-                <downloadUrl>http://java.com/download</downloadUrl>
+                <downloadUrl>https://cdn.azul.com/zulu/bin/zulu22.32.21-ca-crac-jdk22.0.2-win_x64.zip</downloadUrl>
                 <classPath>
                   <mainClass>kwee.ofxviewer.main.Main</mainClass>
                 </classPath>
-                <icon>src/main/resources/GarminLogo.ico</icon>
                 <jre>
-                  <bundledJre64Bit>true</bundledJre64Bit>
-  	              <path>%JAVA_HOME%;%PATH%</path>
-                  <bundledJreAsFallback>true</bundledJreAsFallback>
-                  <minVersion>1.8.0</minVersion>
-                  <jdkPreference>preferJre</jdkPreference>
-                  <runtimeBits>64</runtimeBits>
+	              <path>%java_home%</path>
                 </jre>
+                <icon>src/main/resources/GarminLogo.ico</icon>
                 <versionInfo>
                   <fileVersion>${project.version}</fileVersion>
                   <txtFileVersion>${project.version}</txtFileVersion>
