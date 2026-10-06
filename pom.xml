@@ -32,7 +32,6 @@
       <artifactId>ofx4j</artifactId>
       <version>${com-webcohesion-ofx4j.version}</version>
     </dependency>
-
   </dependencies>
   
   <build>
@@ -189,7 +188,7 @@
                 <headerType>console</headerType>
                 <jar>target/ofxviewer-jar-with-dependencies.jar</jar>
                 <outfile>target/ofxviewer.exe</outfile>
-                <downloadUrl>https://cdn.azul.com/zulu/bin/zulu22.32.21-ca-crac-jdk22.0.2-win_x64.zip</downloadUrl>
+                <downloadUrl>${downloadUrl.jre}</downloadUrl>
                 <classPath>
                   <mainClass>kwee.ofxviewer.main.Main</mainClass>
                 </classPath>
@@ -207,6 +206,7 @@
                   <productName>${project.name}</productName>
                   <internalName>ofxviewer</internalName>
                   <originalFilename>ofxviewer.exe</originalFilename>
+                  <companyName>${companyName}</companyName>
                 </versionInfo>
               </configuration>
             </execution>
@@ -236,6 +236,26 @@
             </execution>
           </executions>
         </plugin>
+	    <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jarsigner-plugin</artifactId>
+          <version>${maven-jarsigner-plugin.version}</version>
+          <executions>
+            <execution>
+              <id>sign</id>
+              <phase>package</phase>
+              <goals>
+                <goal>sign</goal>
+              </goals>
+              <configuration>
+                <file>${project.build.directory}/mailsender-jar-with-dependencies.jar</file>
+	  		  <keystore>keystore.jks</keystore>
+                <alias>RSHK</alias>
+                <storepass>${keystore.password}</storepass>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>		
         -->
   	  	<!-- Sign executable ^ -->		
         <!-- Windows installers v -->
@@ -318,9 +338,9 @@
           </executions>
         </plugin>
        -->
-            </plugins>
+  </plugins>
 
- <!--   </pluginManagement> -->
+  <!--   </pluginManagement> -->
   </build>
   <distributionManagement>
     <!-- Upload to Github v-->
